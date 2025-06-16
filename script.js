@@ -3,13 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskInput = document.getElementById('task-input');
     const taskList = document.getElementById('task-list');
 
-    // Load tasks from localStorage
-    loadTasks();
-
     function addTask() {
         const taskText = taskInput.value.trim();
-        if (taskText === "") {
-            alert("Please enter a task.");
+
+        if (taskText === '') {
+            alert('Please enter a task.');
             return;
         }
 
@@ -18,43 +16,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const removeBtn = document.createElement('button');
         removeBtn.textContent = 'Remove';
-        removeBtn.className = 'remove-btn';
+        removeBtn.classList.add('remove-btn');
 
-        removeBtn.onclick = () => {
+        removeBtn.addEventListener('click', () => {
             taskList.removeChild(li);
-            saveTasks();
-        };
+        });
 
         li.appendChild(removeBtn);
         taskList.appendChild(li);
 
         taskInput.value = '';
-        saveTasks();
-    }
-
-    function saveTasks() {
-        const tasks = [];
-        document.querySelectorAll('#task-list li').forEach(item => {
-            tasks.push(item.firstChild.textContent);
-        });
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    }
-
-    function loadTasks() {
-        const saved = localStorage.getItem('tasks');
-        if (saved) {
-            const tasks = JSON.parse(saved);
-            tasks.forEach(task => {
-                taskInput.value = task;
-                addTask();
-            });
-            taskInput.value = '';
-        }
     }
 
     addButton.addEventListener('click', addTask);
-    taskInput.addEventListener('keypress', event => {
-        if (event.key === 'Enter') {
+
+    taskInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
             addTask();
         }
     });
